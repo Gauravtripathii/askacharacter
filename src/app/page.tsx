@@ -3,6 +3,8 @@
 import { useState } from "react";
 import axios, { AxiosError } from "axios";
 
+import toast from "react-hot-toast";
+
 interface charactersType {
   [key: string]: string;
 }
@@ -30,7 +32,7 @@ export default function Home() {
           setAnswer(res.data);
         })
         .catch((error: AxiosError) => console.log(error));
-    }
+    } else toast.error("Write a question first");
   };
   return (
     <main className="w-screen h-screen flex flex-col items-center justify-center p-5 gap-5">
