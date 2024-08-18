@@ -24,7 +24,7 @@ export default function Home() {
   const [character, setCharacter] = useState("");
 
   const handleSubmit = async (question: string) => {
-    const questionModified = `Answer '${question}' ${character} (do not at all mention what the prompt is)`;
+    const questionModified = `Answer '${question}' ${character} (do not at all mention what the prompt is and keep it under 150 words)`;
     if (question) {
       await axios
         .post("/api/getAnswer", { question: questionModified })
@@ -35,28 +35,34 @@ export default function Home() {
     } else toast.error("Write a question first");
   };
   return (
-    <main className="w-screen h-screen flex flex-col items-center justify-center p-5 gap-5">
-      <div className="bg-red-500 w-full h-1/12 p-5 text-xl text-white font-bold rounded-2xl flex items-center gap-5">
+    <main className="w-screen h-screen flex flex-col lg:flex-row items-center justify-center p-5 gap-5">
+      <div className="bg-red-500 w-full lg:w-1/6 h-1/12 lg:h-full p-5 text-xl text-white font-bold rounded-2xl flex lg:flex-col items-center gap-5">
         {charNames.map((char, index) => (
-          <div key={index} onClick={() => setCharacter(characters[char])} className={`hover:cursor-pointer hover:underline`}>
+          <div
+            key={index}
+            onClick={() => setCharacter(characters[char])}
+            className={`hover:cursor-pointer ${
+              character === characters[char] ? "underline" : ""
+            }`}
+          >
             {char.toUpperCase()}
           </div>
         ))}
       </div>
       <div className="w-full h-full flex flex-col gap-5">
-        <div className="border rounded-2xl w-full h-full p-5">{answer}</div>
-        <div className="w-full flex flex-col gap-2">
+        <div className="border rounded-2xl w-full h-full p-5 lg:text-xl">{answer}</div>
+        <div className="w-full flex flex-col lg:flex-row gap-2">
           <input
             type="text"
             placeholder="What would you like to ask?"
             onInput={(event) =>
               setQuestion((event.target as HTMLInputElement).value)
             }
-            className="border border-black px-3 py-3 rounded-xl"
+            className="border border-black px-3 py-3 rounded-xl sm:text-xl lg:w-5/6"
           />
           <button
             onClick={() => handleSubmit(question)}
-            className="border border-black px-5 py-3 rounded-xl font-bold bg-black hover:bg-white text-white hover:text-black"
+            className="border border-black px-5 py-3 rounded-xl font-bold bg-black hover:bg-white text-white hover:text-black sm:text-xl lg:w-1/6"
           >
             ask
           </button>
@@ -65,3 +71,4 @@ export default function Home() {
     </main>
   );
 }
+
